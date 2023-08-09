@@ -14,8 +14,6 @@ import (
 )
 
 func CreateEmploye(w http.ResponseWriter, r *http.Request) {
-	// var user dto.User
-	// err := json.NewDecoder(r.Body).Decode(&user)
 	err := r.ParseMultipartForm(10 << 20)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -165,7 +163,6 @@ func IsLoginValid(email, password string, imageFile multipart.File) bool {
 	}
 	defer db.Close()
 
-	// Membaca data gambar dari database sesuai dengan email
 	var storedEmployee dto.User
 	err = db.QueryRow("SELECT * FROM employee WHERE email = ?", email).Scan(
 		&storedEmployee.Id,
@@ -179,31 +176,26 @@ func IsLoginValid(email, password string, imageFile multipart.File) bool {
 		return false
 	}
 
-	// Mengecek password
 	if password != storedEmployee.Password {
 		return false
 	}
 
-	// Membaca data gambar yang tersimpan
 	storedImageBytes, err := ioutil.ReadFile(`C:\Users\LENOVO\Desktop\technical\image\` + storedEmployee.Faceid)
 	if err != nil {
 		fmt.Println("Gagal membaca data gambar tersimpan:", err)
 		return false
 	}
 
-	// Membaca data gambar yang diunggah
 	uploadedImageBytes, err := ioutil.ReadAll(imageFile)
 	if err != nil {
 		fmt.Println("Gagal membaca data gambar yang diunggah:", err)
 		return false
 	}
 
-	// Membandingkan data gambar
 	if bytes.Compare(storedImageBytes, uploadedImageBytes) != 0 {
 		return false
 	}
 
-	// Jika semua data cocok
 	return true
 }
 
@@ -215,7 +207,6 @@ func IsLogoutValid(email, password string, imageFile multipart.File) bool {
 	}
 	defer db.Close()
 
-	// Membaca data gambar dari database sesuai dengan email
 	var storedEmployee dto.User
 	err = db.QueryRow("SELECT * FROM employee WHERE email = ?", email).Scan(
 		&storedEmployee.Id,
@@ -229,31 +220,26 @@ func IsLogoutValid(email, password string, imageFile multipart.File) bool {
 		return false
 	}
 
-	// Mengecek password
 	if password != storedEmployee.Password {
 		return false
 	}
 
-	// Membaca data gambar yang tersimpan
 	storedImageBytes, err := ioutil.ReadFile(`C:\Users\LENOVO\Desktop\technical\image\` + storedEmployee.Faceid)
 	if err != nil {
 		fmt.Println("Gagal membaca data gambar tersimpan:", err)
 		return false
 	}
 
-	// Membaca data gambar yang diunggah
 	uploadedImageBytes, err := ioutil.ReadAll(imageFile)
 	if err != nil {
 		fmt.Println("Gagal membaca data gambar yang diunggah:", err)
 		return false
 	}
 
-	// Membandingkan data gambar
 	if bytes.Compare(storedImageBytes, uploadedImageBytes) != 0 {
 		return false
 	}
 
-	// Jika semua data cocok
 	return true
 }
 
